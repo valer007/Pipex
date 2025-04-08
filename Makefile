@@ -41,7 +41,7 @@ $(BUILD)/%.o: $(SRC_DIRS)/%.c
 clean:
 	@echo "${RED}🧹 Removing Object Files...${RESET}"
 	@make clean -C libft
-	@rm -f $(OBJS)
+	@rm -rf $(OBJS) $(BUILD)
 
 fclean: clean
 	@echo "${RED}🔥 Removing Executable Files...${RESET}"
