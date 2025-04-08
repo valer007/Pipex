@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:01:52 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/06 14:02:54 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/08 23:39:54 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,20 @@
 # include "libft.h"
 # include <fcntl.h>
 
-typedef struct s_pipex
+typedef struct s_pip
 {
-	int		ac;
-	char	**av;
-	char	**ep;
-	char	**path;
-	int		fd1;
-	int		fd2;
-}	t_pipex;
+	int	i;
+	int	input;
+	int	output;
+}				t_pip;
 
+void	here_doc_check(char *line, char *limiter, int *fd);
 void	error(void);
 void	execute(char *argv, char **envp);
+void	here_doc(char *argv, int argc);
+void	free_split(char **arr);
+char	*find_path(char *argv, char **envp);
+void	check(int argc, char **argv, int i);
+void	free_split(char **arr);
 
 #endif
