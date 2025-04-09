@@ -6,55 +6,50 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 21:14:13 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/08 23:51:09 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:25:09 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	**get_path_from_env(char **envp)
+static char	*search_in_path(char *argv, char **paths)
 {
 	int		i;
-	char	**result;
-
-	i = -1;
-	result = NULL;
-	while (envp[++i])
-	{
-		if (!ft_strncmp("PATH=", envp[i], 5))
-		{
-			result = ft_split(ft_strchr(envp[i], '/'), ':');
-			break ;
-		}
-	}
-	return (result);
-}
-
-char	*find_path(char *argv, char **envp)
-{
-	int		i;
-	char	**result;
-	char	*full_path;
 	char	*temp;
+	char	*full_path;
 
-	result = get_path_from_env(envp);
-	if (!result)
-		return (NULL);
 	i = -1;
-	while (result[++i])
+	while (paths[++i])
 	{
-		temp = ft_strjoin(result[i], "/");
+		temp = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(temp, argv);
 		free(temp);
-		if (access(full_path, F_OK) == 0)
+		if (access(full_path, F_OK | X_OK) == 0)
 		{
-			free_split(result);
+			free_split(paths);
 			return (full_path);
 		}
 		free(full_path);
 	}
-	free_split(result);
+	free_split(paths);
 	return (NULL);
+}
+
+char	*find_path(char *argv, char **envp)
+{
+	char	**paths;
+
+	if ((argv[0] == '.' && argv[1] == '/') || (argv[0] == '.'
+			&& argv[1] == '.' && argv[2] == '/'))
+	{
+		if (access(argv, F_OK | X_OK) == 0)
+			return (ft_strdup(argv));
+		return (NULL);
+	}
+	paths = get_path_from_env(envp);
+	if (!paths)
+		return (NULL);
+	return (search_in_path(argv, paths));
 }
 
 static int	get_line(char **line)

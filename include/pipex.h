@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:01:52 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/08 23:39:54 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:22:08 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ void	free_split(char **arr);
 char	*find_path(char *argv, char **envp);
 void	check(int argc, char **argv, int i);
 void	free_split(char **arr);
-
+char	**get_path_from_env(char **envp);
 #endif

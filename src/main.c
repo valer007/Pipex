@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:09:43 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/09 00:10:02 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:50:37 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ static void	child_process(char *argv, char **envp)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		execute(argv, envp);
+		waitpid(pid, NULL, 0);
 	}
 	else
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
 	}
 }
 
