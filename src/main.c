@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:09:43 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/09 20:52:37 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:54:09 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static void	child_process(char *argv, char **envp)
 		waitpid(pid, NULL, 0);
 	}
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
