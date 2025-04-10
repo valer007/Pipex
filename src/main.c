@@ -6,17 +6,11 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:09:43 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/10 11:23:33 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:30:23 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	error(void)
-{
-	perror("Error");
-	exit(EXIT_FAILURE);
-}
 
 void	execute(char *argv, char **envp)
 {
@@ -40,20 +34,27 @@ void	execute(char *argv, char **envp)
 	free_split(cmd);
 }
 
-int	open_file(char *argv, int i)
+t_pip	helper1(char **argv, int argc)
 {
-	int	file;
+	t_pip	pip;
 
-	file = 0;
-	if (i == 0)
-		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	else if (i == 1)
-		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (i == 2)
-		file = open(argv, O_RDONLY, 0777);
-	if (file == -1)
-		error();
-	return (file);
+	pip.i = 3;
+	pip.output = open_file(argv[argc - 1], 0);
+	here_doc(argv[2], argc);
+	check(argc, argv, pip.i);
+	return (pip);
+}
+
+t_pip	helper2(char **argv, int argc)
+{
+	t_pip	pip;
+
+	pip.i = 2;
+	pip.output = open_file(argv[argc - 1], 1);
+	pip.input = open_file(argv[1], 2);
+	dup2(pip.input, STDIN_FILENO);
+	check(argc, argv, pip.i);
+	return (pip);
 }
 
 static void	child_process(char *argv, char **envp)
@@ -80,39 +81,34 @@ static void	child_process(char *argv, char **envp)
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 			error();
 		close(fd[0]);
-		// waitpid(pid, NULL, 0);
 	}
 }
 
-
-
 int	main(int argc, char **argv, char **envp)
 {
+	pid_t	last_pid;
 	t_pip	pip;
 
 	if (argc >= 5)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		{
-			pip.i = 3;
-			pip.output = open_file(argv[argc - 1], 0);
-			here_doc(argv[2], argc);
-			check(argc, argv, pip.i);
-		}
+			pip = helper1(argv, argc);
 		else
 		{
-			pip.i = 2;
-			pip.output = open_file(argv[argc - 1], 1);
-			pip.input = open_file(argv[1], 2);
-			dup2(pip.input, STDIN_FILENO);
-			check(argc, argv, pip.i);
+			pip = helper2(argv, argc);
 		}
 		while (pip.i < argc - 2)
 			child_process(argv[pip.i++], envp);
-		dup2(pip.output, STDOUT_FILENO);
-		execute(argv[argc - 2], envp);
+		last_pid = fork();
+		if (last_pid == 0)
+		{
+			if (dup2(pip.output, STDOUT_FILENO) == -1)
+				error();
+			close(pip.output);
+			execute(argv[argc - 2], envp);
+		}
+		close(pip.output);
 	}
-	while (wait(NULL) > 0)
+	while (wait(NULL) != -1)
 		;
-	return (0);
 }

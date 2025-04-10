@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:01:52 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/09 17:22:08 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:27:57 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,8 @@ char	*find_path(char *argv, char **envp);
 void	check(int argc, char **argv, int i);
 void	free_split(char **arr);
 char	**get_path_from_env(char **envp);
+int		open_file(char *argv, int i);
+// t_pip	helper1(char **argv, int argc);
+// t_pip	helper2(char **argv, int argc);
+
 #endif

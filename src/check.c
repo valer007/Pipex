@@ -6,11 +6,17 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 22:58:54 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/09 17:24:18 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:28:37 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	error(void)
+{
+	perror("Error");
+	exit(EXIT_FAILURE);
+}
 
 char	**get_path_from_env(char **envp)
 {
@@ -49,4 +55,20 @@ void	check(int argc, char **argv, int i)
 			error();
 		i++;
 	}
+}
+
+int	open_file(char *argv, int i)
+{
+	int	file;
+
+	file = 0;
+	if (i == 0)
+		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else if (i == 1)
+		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (i == 2)
+		file = open(argv, O_RDONLY, 0777);
+	if (file == -1)
+		error();
+	return (file);
 }
