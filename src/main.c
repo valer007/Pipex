@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 14:09:43 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/09 20:54:09 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:23:33 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static void	child_process(char *argv, char **envp)
 		close(fd[0]);
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			error();
-		close(fd[1]);
 		execute(argv, envp);
+		close(fd[1]);
 	}
 	else
 	{
@@ -80,9 +80,11 @@ static void	child_process(char *argv, char **envp)
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 			error();
 		close(fd[0]);
-		waitpid(pid, NULL, 0);
+		// waitpid(pid, NULL, 0);
 	}
 }
+
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -110,5 +112,7 @@ int	main(int argc, char **argv, char **envp)
 		dup2(pip.output, STDOUT_FILENO);
 		execute(argv[argc - 2], envp);
 	}
-	wait(NULL);
+	while (wait(NULL) > 0)
+		;
+	return (0);
 }
