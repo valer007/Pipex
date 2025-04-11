@@ -7,7 +7,7 @@ CFLAGS   = -Wall -Wextra -Werror $(INCLUDE) -fsanitize=address -g
 LIB      = -Llibft -lft
 
 SRC_DIRS  = src
-SRC_FILES = main.c pipex_utils.c check.c
+SRC_FILES = main.c pipex_utils.c check.c pipex_here_doc.c pipex.c
 OBJS      = $(patsubst %.c, $(BUILD)/%.o, $(SRC_FILES))
 
 RESET			= \033[0m

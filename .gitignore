@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 script.sh
+.DS_Store
 
 # Object files
 *.o

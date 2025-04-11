@@ -6,16 +6,32 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 22:58:54 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/10 13:28:37 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/12 02:33:47 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	error(void)
+void	execute(char *argv, char **envp)
 {
-	perror("Error");
-	exit(EXIT_FAILURE);
+	char	**cmd;
+	char	*path;
+
+	cmd = ft_split(argv, ' ');
+	path = find_path(cmd[0], envp);
+	if (!path)
+	{
+		free(path);
+		error();
+	}
+	if (execve(path, cmd, envp) == -1)
+	{
+		free(path);
+		free_split(cmd);
+		error();
+	}
+	free(path);
+	free_split(cmd);
 }
 
 char	**get_path_from_env(char **envp)
