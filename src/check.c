@@ -6,11 +6,19 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 22:58:54 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/12 12:38:05 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/12 15:45:56 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static void	call_function(char *path, char **cmd, char **envp)
+{
+	execve(path, cmd, envp);
+	free(path);
+	free_split(cmd);
+	error();
+}
 
 void	execute(char *argv, char **envp)
 {
@@ -18,20 +26,25 @@ void	execute(char *argv, char **envp)
 	char	*path;
 
 	cmd = ft_split(argv, ' ');
-	path = find_path(cmd[0], envp);
-	if (!path)
-	{
-		free(path);
+	if (!cmd || !cmd[0])
 		error();
+	if (ft_strchr(cmd[0], '/'))
+	{
+		if (access(cmd[0], X_OK) == -1)
+		{
+			free_split(cmd);
+			error();
+		}
+		execve(cmd[0], cmd, envp);
 	}
-	if (execve(path, cmd, envp) == -1)
+	path = find_path(cmd[0], envp);
+	if (!path || access(path, X_OK) == -1)
 	{
 		free(path);
 		free_split(cmd);
 		error();
 	}
-	free(path);
-	free_split(cmd);
+	call_function(path, cmd, envp);
 }
 
 char	**get_path_from_env(char **envp)
@@ -66,25 +79,9 @@ void	check(int argc, char **argv, int i)
 {
 	while (i < argc - 1)
 	{
-		if (argv[i][0] == '\0' || argv[i][0] == '/'
+		if (argv[i][0] == '\0'
 			|| (argv[i][0] == '.' && argv[i][1] != '/'))
 			error();
 		i++;
 	}
-}
-
-int	open_file(char *argv, int i)
-{
-	int	file;
-
-	file = 0;
-	if (i == 0)
-		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	else if (i == 1)
-		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (i == 2)
-		file = open(argv, O_RDONLY, 0777);
-	if (file == -1)
-		error();
-	return (file);
 }

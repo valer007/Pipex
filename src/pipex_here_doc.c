@@ -6,11 +6,27 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 02:27:19 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/12 12:02:03 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/12 15:36:29 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	open_file(char *argv, int i)
+{
+	int	file;
+
+	file = 0;
+	if (i == 0)
+		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else if (i == 1)
+		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (i == 2)
+		file = open(argv, O_RDONLY, 0777);
+	if (file == -1)
+		error();
+	return (file);
+}
 
 static t_pip	helper1(char **argv, int argc)
 {

@@ -6,7 +6,7 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 02:19:21 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/12 12:26:05 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/12 15:47:20 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_pip	helper2(char **argv, int argc)
 	return (pip);
 }
 
-void chlp(int argc, char **argv, char **envp, t_pip pip)
+static void	chlp(int argc, char **argv, char **envp, t_pip pip)
 {
 	last_commad(argv, argc, envp, pip);
 	close(pip.prev_fd);
