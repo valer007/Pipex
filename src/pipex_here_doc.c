@@ -6,13 +6,13 @@
 /*   By: vmakarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 02:27:19 by vmakarya          #+#    #+#             */
-/*   Updated: 2025/04/12 02:32:21 by vmakarya         ###   ########.fr       */
+/*   Updated: 2025/04/12 12:02:03 by vmakarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-t_pip	helper1(char **argv, int argc)
+static t_pip	helper1(char **argv, int argc)
 {
 	t_pip	pip;
 
