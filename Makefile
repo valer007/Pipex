@@ -3,7 +3,7 @@ NAME     = pipex
 BUILD    = build
 INCLUDE  = -I./include -I./libft
 CC       = cc
-CFLAGS   = -Wall -Wextra -Werror $(INCLUDE) -fsanitize=address -g
+CFLAGS   = -Wall -Wextra -Werror $(INCLUDE)
 LIB      = -Llibft -lft
 
 SRC_DIRS  = src
